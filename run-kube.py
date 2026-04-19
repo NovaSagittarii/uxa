@@ -79,10 +79,13 @@ if __name__ == "__main__":
             "and provide detailed feedback. " + url
         )
 
+    concur = st.number_input("concurrency", value=10, min_value=1, max_value=20)
+    runs = st.number_input("runs", value=3, min_value=1, max_value=20)
+
     if st.button(f"Check {url}"):
         with st.spinner("Running...", show_time=True):
-            with multiprocessing.Pool(10) as pool:
-                results = pool.map(run, [prompt for _ in range(3)])
+            with multiprocessing.Pool(concur) as pool:
+                results = pool.map(run, [prompt for _ in range(runs)])
 
         allresults = "\n;;;\n".join(results)
         with st.expander(label="Individual reports"):
