@@ -1,2 +1,5 @@
 **/.env
 **/.venv
+**/.terraform
+**/*.tfstate*
+**/kubeconfig.yaml
