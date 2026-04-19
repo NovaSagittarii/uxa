@@ -19,7 +19,7 @@ def clean_text(text: str) -> str:
     # Remove <tool_call>...</tool_call> blocks (including tags)
     text = re.sub(r"<tool_call>.*?</tool_call>", "", text, flags=re.DOTALL)
 
-    return text
+    return text.strip()
 
 
 def run(query: str) -> str:
