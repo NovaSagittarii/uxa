@@ -19,5 +19,5 @@ helm upgrade -i uxa charts/uxa-job --set uxaConfig.apiKey=$ZEROCLAW_API_KEY --se
 ```sh
 source job/.env
 export KUBECONFIG=$(realpath vultr/kubeconfig.yaml)
-python run-kube.py
+uv run streamlit run run-kube.py
 ```

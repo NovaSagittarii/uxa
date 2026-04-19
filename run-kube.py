@@ -67,19 +67,28 @@ if __name__ == "__main__":
         print("You should set the KUBECONFIG env var.")
         exit(1)
 
-    # prompt = input(">>> ")
-    prompt = input("website to check: ")
-    if not prompt.startswith("<<<"):  # scuffed manual override
+    import streamlit as st
+
+    url = st.text_input("website to check")
+    if url.startswith("<<<"):  # scuffed manual override
+        prompt = url
+    else:
         prompt = (
             "You are a QA UX tester. "
             "Interact and explore my website using agent-browser "
-            "and provide detailed feedback. " + prompt
+            "and provide detailed feedback. " + url
         )
-    with multiprocessing.Pool(10) as pool:
-        results = pool.map(run, [prompt for _ in range(3)])
 
-    allresults = "\n;;;\n".join(results)
+    if st.button(f"Check {url}"):
+        with st.spinner("Running...", show_time=True):
+            with multiprocessing.Pool(10) as pool:
+                results = pool.map(run, [prompt for _ in range(3)])
 
-    result = run(f"# Summarize the following:\n;;;\n{allresults}")
-    time.sleep(1)
-    print("\n\n\n", result)
+        allresults = "\n;;;\n".join(results)
+        with st.expander(label="Individual reports"):
+            for x in results:
+                st.write(x)
+
+        with st.spinner("Summarizing...", show_time=True):
+            result = run(f"# Summarize the following:\n;;;\n{allresults}")
+        st.write(result)
