@@ -15,3 +15,9 @@ docker run --rm --env-file job/.env -p 8000:8000 -it lithoium/uxa-job
 ```sh
 helm upgrade -i uxa charts/uxa-job --set uxaConfig.apiKey=$ZEROCLAW_API_KEY --set uxaConfig.query="what's the weather like?"
 ```
+
+```sh
+source job/.env
+export KUBECONFIG=$(realpath vultr/kubeconfig.yaml)
+python run-kube.py
+```
