@@ -14,7 +14,7 @@ RUN bash install.sh
 # RUN apt install -y htop tmux openssh-server vim
 # EXPOSE 22
 
-EXPOSE 80
+EXPOSE 8000
 
 COPY start.sh start.sh
 CMD [ "bash", "/uxa-job/start.sh"]
