@@ -22,4 +22,8 @@ export PATH="$PATH:/usr/local/cargo/bin"
 # agent-browser (install --with-deps uses apt!!)
 (cargo install agent-browser && agent-browser install --with-deps) &
 (cargo install toml-cli) &
+(
+    curl -LsSf https://astral.sh/uv/install.sh | sh && \
+    /root/.local/bin/uv sync
+) &
 wait

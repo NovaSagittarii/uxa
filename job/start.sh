@@ -17,6 +17,7 @@ toml set ~/.zeroclaw/config.toml reliability.max_backoff_ms 60000 > ~/.zeroclaw/
 cp ~/.zeroclaw/config.toml.tmp ~/.zeroclaw/config.toml
 
 # exec bash
-exec zeroclaw agent
+/root/.local/bin/uv run /uxa-job/main.py &
+zeroclaw agent -m $ZEROCLAW_QUERY > /uxa-job/out.txt 2> /uxa-job/err.txt
 
-# zeroclaw agent -m "your query"
+exec wait
