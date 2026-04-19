@@ -27,31 +27,36 @@ def run(query: str) -> str:
     print("query\n" + 30 * "===" + "\n", query, "\n")
     name = f"uxa-{random.randbytes(8).hex()}"
     pod = f"{name}-uxa-job"
-    b64 = base64.b64encode(query.encode()).decode()
-    subprocess.run(
-        f"helm upgrade -i {name} ./charts/uxa-job "
-        '--set uxaConfig.apiKey="$ZEROCLAW_API_KEY" '
-        f'--set uxaConfig.query="$(echo {b64} | base64 -d)"',
-        shell=True,
-    )
-    subprocess.run(
-        f"kubectl wait --for=condition=Ready pod/{pod} --timeout=60000s", shell=True
-    )
-    result = subprocess.run(
-        f"kubectl exec {pod} -- curl -s http://localhost:8000",
-        capture_output=True,
-        text=True,
-        shell=True,
-    )
-    print(
-        "RESULT\n" + "===" * 30 + "\n",
-        result.stdout,
-        "\n" + "===" * 30 + "\n",
-        clean_text(result.stdout),
-        "\n" + "===" * 30 + "\n",
-    )
-    subprocess.run(f"helm uninstall {name}", shell=True)
-    return clean_text(result.stdout)
+    for _ in range(9):  # light-retry (if no response)
+        b64 = base64.b64encode(query.encode()).decode()
+        subprocess.run(
+            f"helm upgrade -i {name} ./charts/uxa-job "
+            '--set uxaConfig.apiKey="$ZEROCLAW_API_KEY" '
+            f'--set uxaConfig.query="$(echo {b64} | base64 -d)"',
+            shell=True,
+        )
+        subprocess.run(
+            f"kubectl wait --for=condition=Ready pod/{pod} --timeout=60000s", shell=True
+        )
+        result = subprocess.run(
+            f"kubectl exec {pod} -- curl -s http://localhost:8000",
+            capture_output=True,
+            text=True,
+            shell=True,
+        )
+        print(
+            "RESULT\n" + "===" * 30 + "\n",
+            result.stdout,
+            "\n" + "===" * 30 + "\n",
+            clean_text(result.stdout),
+            "\n" + "===" * 30 + "\n",
+        )
+        subprocess.run(f"helm uninstall {name}", shell=True)
+        out = clean_text(result.stdout).strip()
+        if out:
+            return out
+
+    return ""
 
 
 if __name__ == "__main__":
@@ -63,7 +68,7 @@ if __name__ == "__main__":
         exit(1)
 
     # prompt = input(">>> ")
-    prompt = input("website: ")
+    prompt = input("website to check: ")
     if not prompt.startswith("<<<"):  # scuffed manual override
         prompt = (
             "You are a QA UX tester. "
