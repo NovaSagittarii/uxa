@@ -15,6 +15,8 @@ toml set ~/.zeroclaw/config.toml reliability.max_retries "STRIP(100)" > ~/.zeroc
 cp ~/.zeroclaw/config.toml.tmp ~/.zeroclaw/config.toml
 toml set ~/.zeroclaw/config.toml reliability.max_backoff_ms "STRIP(60000)" > ~/.zeroclaw/config.toml.tmp
 cp ~/.zeroclaw/config.toml.tmp ~/.zeroclaw/config.toml
+toml set ~/.zeroclaw/config.toml pacing.loop_detection_enabled "STRIP(false)" > ~/.zeroclaw/config.toml.tmp
+cp ~/.zeroclaw/config.toml.tmp ~/.zeroclaw/config.toml
 # handle the fact that toml-cli can't do typed replacement lol
 cat ~/.zeroclaw/config.toml.tmp | sed -E 's/"STRIP\(([^)]*)\)"/\1/g' > ~/.zeroclaw/config.toml
 
