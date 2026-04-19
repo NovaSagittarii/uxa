@@ -8,13 +8,15 @@ zeroclaw onboard \
     --quick
 toml set ~/.zeroclaw/config.toml autonomy.level "full" > ~/.zeroclaw/config.toml.tmp
 cp ~/.zeroclaw/config.toml.tmp ~/.zeroclaw/config.toml
-toml set ~/.zeroclaw/config.toml agent.max_tool_iterations 100 > ~/.zeroclaw/config.toml.tmp
+toml set ~/.zeroclaw/config.toml agent.max_tool_iterations "STRIP(100)" > ~/.zeroclaw/config.toml.tmp
 cp ~/.zeroclaw/config.toml.tmp ~/.zeroclaw/config.toml
 
-toml set ~/.zeroclaw/config.toml reliability.max_retries 100 > ~/.zeroclaw/config.toml.tmp
+toml set ~/.zeroclaw/config.toml reliability.max_retries "STRIP(100)" > ~/.zeroclaw/config.toml.tmp
 cp ~/.zeroclaw/config.toml.tmp ~/.zeroclaw/config.toml
-toml set ~/.zeroclaw/config.toml reliability.max_backoff_ms 60000 > ~/.zeroclaw/config.toml.tmp
+toml set ~/.zeroclaw/config.toml reliability.max_backoff_ms "STRIP(60000)" > ~/.zeroclaw/config.toml.tmp
 cp ~/.zeroclaw/config.toml.tmp ~/.zeroclaw/config.toml
+# handle the fact that toml-cli can't do typed replacement lol
+cat ~/.zeroclaw/config.toml.tmp | sed -E 's/"STRIP\(([^)]*)\)"/\1/g' > ~/.zeroclaw/config.toml
 
 # exec bash
 # /root/.local/bin/uv run /uxa-job/main.py &
