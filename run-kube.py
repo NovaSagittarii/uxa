@@ -64,11 +64,12 @@ if __name__ == "__main__":
 
     # prompt = input(">>> ")
     prompt = input("website: ")
-    prompt = (
-        "You are a QA UX tester. "
-        "Interact and explore my website using agent-browser and provide feedback. "
-        + prompt
-    )
+    if not prompt.startswith("<<<"):  # scuffed manual override
+        prompt = (
+            "You are a QA UX tester. "
+            "Interact and explore my website using agent-browser "
+            "and provide detailed feedback. " + prompt
+        )
     with multiprocessing.Pool(10) as pool:
         results = pool.map(run, [prompt for _ in range(3)])
 

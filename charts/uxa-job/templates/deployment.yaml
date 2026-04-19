@@ -53,8 +53,8 @@ spec:
         - name: ZEROCLAW_MODEL
           value: {{ .model }}
         - name: ZEROCLAW_QUERY
-          value: |
-            {{ .query | nindent 12 }}
+          value: >
+{{ .query | trim | indent 12 }}
       {{- end }}
   {{- with .Values.volumes }}
   volumes:
