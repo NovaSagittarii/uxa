@@ -26,8 +26,10 @@ def run(query: str) -> str:
     print("query\n" + 30 * "===" + "\n", query, "\n")
     name = f"uxa-{random.randbytes(8).hex()}"
     pod = f"{name}-uxa-job"
+    query = query.replace('"', '\\"')
+    query = query.replace('`', '\\`')
     for _ in range(9):  # light-retry (if no response)
-        b64 = base64.b64encode(query.replace('"', '\\"').encode()).decode()
+        b64 = base64.b64encode(query.encode()).decode()
         subprocess.run(
             f"helm upgrade -i {name} ./charts/uxa-job "
             '--set uxaConfig.apiKey="$ZEROCLAW_API_KEY" '
