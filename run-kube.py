@@ -23,7 +23,6 @@ def clean_text(text: str) -> str:
 
 
 def run(query: str) -> str:
-    query = query.replace("-", " ")  # uhh something about the text inject bugged
     print("query\n" + 30 * "===" + "\n", query, "\n")
     name = f"uxa-{random.randbytes(8).hex()}"
     pod = f"{name}-uxa-job"
