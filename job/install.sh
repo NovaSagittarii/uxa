@@ -2,12 +2,12 @@
 set -euxo pipefail
 
 apt install -y build-essential
-apt install -y mold
-mkdir -p /root/.cargo/
-cat <<EOF >> /root/.cargo/config.toml
-[target.'cfg(target_os = "linux")']
-rustflags = ["-C", "link-arg=-fuse-ld=mold"]
-EOF
+# apt install -y mold
+# mkdir -p /root/.cargo/
+# cat <<EOF >> /root/.cargo/config.toml
+# [target.'cfg(target_os = "linux")']
+# rustflags = ["-C", "link-arg=-fuse-ld=mold"]
+# EOF
 
 echo 'export PATH="$PATH:/usr/local/cargo/bin"' >> ~/.bashrc
 export PATH="$PATH:/usr/local/cargo/bin"
@@ -19,5 +19,5 @@ export PATH="$PATH:/usr/local/cargo/bin"
     cd zeroclaw && ./install.sh --skip-onboard
 ) &
 # agent-browser
-(cargo install agent-browser && agent-browser install) &
+(cargo install agent-browser) &
 wait
