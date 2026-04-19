@@ -21,5 +21,7 @@ cp ~/.zeroclaw/config.toml.tmp ~/.zeroclaw/config.toml
 # zeroclaw agent -m $ZEROCLAW_QUERY > /uxa-job/out.txt 2> /uxa-job/err.txt
 # exec wait
 
-zeroclaw agent -m $ZEROCLAW_QUERY > /uxa-job/out.txt 2> /uxa-job/err.txt
+zeroclaw agent -m "$ZEROCLAW_QUERY" > /uxa-job/out.txt 2> /uxa-job/err.txt
+cat /uxa-job/out.txt  # print for visibility
+cat /uxa-job/err.txt
 exec /root/.local/bin/uv run /uxa-job/main.py
